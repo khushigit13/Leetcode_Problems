@@ -1,0 +1,28 @@
+class Solution {
+public:
+  
+     int burst_ballons(vector<int> &nums,int s,int e,vector<vector<int>> &dp){
+         if(dp[s+1][e+1]!=-1){
+             return dp[s+1][e+1];
+         }
+        int maxcoins=0;
+        for(int cut=s+1;cut<e;cut++){
+            int lhs=burst_ballons(nums,s,cut,dp);
+            int rhs=burst_ballons(nums,cut,e,dp);
+            int coins=nums[cut];
+            coins*=(s==-1)?1:nums[s];
+            coins*=(e==nums.size())?1:nums[e];
+            coins+=lhs+rhs;
+            maxcoins=max(maxcoins,coins);
+        }
+        return  dp[s+1][e+1]=maxcoins;
+    }
+    
+
+    
+    int maxCoins(vector<int>& nums) {
+        int n=nums.size();
+        vector<vector<int>> dp(n+2,vector<int>(n+2,-1));
+        return burst_ballons(nums,-1,n,dp);
+    }
+};
