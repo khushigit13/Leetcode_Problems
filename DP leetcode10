@@ -1,0 +1,47 @@
+class Solution {
+public:
+    vector<vector<int>> michangesforpalindrome(string s){
+           int m=s.size();
+           vector<vector<int>> mchng(m,vector<int>(m,0));
+        
+        for(int gap=1;gap<m;gap++){
+            for(int i=0,j=gap;j<m;i++,j++){
+                if(gap==1){
+                    mchng[i][j]=(s[i]==s[j]?0:1);
+                }
+                else{
+             mchng[i][j]=((s[i]==s[j])?mchng[i+1][j-1]:(mchng[i+1][j-1]+1));
+                }
+            }
+        }
+        return mchng;
+    }
+    
+    
+    int palindromePartition_(string s,int k,int m,vector<vector<int>> &dp, vector<vector<int>> &mchng){
+        if(m==k){
+            return dp[k][m]=0;
+        }
+        if(k==1){
+            return dp[k][m]=mchng[0][m-1];
+        }
+        if(dp[k][m]!=-1){
+            return dp[k][m];
+        }
+        int minval=1e9+7;
+        for(int i=m;i>=k;i--){
+             int count=palindromePartition_(s,k-1,i-1,dp,mchng);
+              minval=min(minval,count+mchng[i-1][m-1]);
+            }
+        
+        return dp[k][m]=minval;
+    }
+    
+    
+    int palindromePartition(string s, int k) {
+        int m=s.size();
+        vector<vector<int>> mchng=michangesforpalindrome(s);
+        vector<vector<int>> dp(k+1,vector<int>(m+1,-1));
+      return palindromePartition_(s,k,m,dp,mchng);
+    }
+};
