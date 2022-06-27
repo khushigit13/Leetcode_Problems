@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int isMatch_(string s, string p,int N,int M, vector<vector<int>> &dp){
+        for(int n=0;n<=N;n++){
+            for(int m=0;m<=M;m++){
+                if(n==0 && m==0){
+           dp[n][m]=1;
+                    continue;
+        }
+         if(m==0){
+            dp[n][m]=0;
+             continue;
+        }
+      
+        
+         if(n>0 &&(p[m-1]=='?' ||  p[m-1]==s[n-1])){
+            dp[n][m]= dp[n-1][m-1];
+             continue;
+        }
+        
+        else if(p[m-1]=='*'){
+           bool res=dp[n][m-1]==1;
+           if(n>0){
+               res=res || dp[n-1][m]==1; 
+           }
+           dp[n][m]= res?1:0;
+            continue;
+        }
+        
+      else
+        dp[n][m]=0;}}
+        return dp[N][M];
+    }
+    bool isMatch(string s, string p) {
+         int n=s.size();
+        int m=p.size();
+        vector<vector<int>> dp(n+1,vector<int>(m+1,-1));
+        return isMatch_(s,p,n,m,dp)==1;
+    }
+};
