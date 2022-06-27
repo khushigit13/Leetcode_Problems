@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int minCost_(vector<int> &cuts,int s,int e,vector<vector<int>> &dp){
+        if(dp[s][e]!=-1){
+            return dp[s][e];
+        }
+        int mincost=1e9;
+        for(int cut=s;cut<=e;cut++){
+        int leftcall=((cut==s)?0:minCost_(cuts,s,cut-1,dp));
+int rightcall=((cut==e)?0:minCost_(cuts,cut+1,e,dp));
+            int cost=cuts[e+1]-cuts[s-1];
+            cost+=leftcall  +rightcall;
+            mincost=min(mincost,cost);
+        }
+        return dp[s][e]=mincost;
+    }
+    
+    int minCost(int n, vector<int>& cuts) {
+        cuts.push_back(n);
+        cuts.insert(cuts.begin(),0);
+        int N=cuts.size();
+        sort(cuts.begin(),cuts.end());
+        vector<vector<int>> dp(N,vector<int>(N,-1));
+        return minCost_(cuts,1,N-2,dp);
+    }
+};
