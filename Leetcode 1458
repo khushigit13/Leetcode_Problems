@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int maxDotProduct_(vector<int>& num1, vector<int>& num2,int n,int m,vector<vector<int>> &dp){
+        if(m==0 || n==0){
+            return dp[n][m]=(-1e8);
+        }
+        if(dp[n][m]!=-1e9){
+            return dp[n][m];
+        }
+        int product=num1[n-1]*num2[m-1];
+        int acceptboth=maxDotProduct_(num1,num2,n-1,m-1,dp)+product;
+        int a=maxDotProduct_(num1,num2,n,m-1,dp);
+        int b=maxDotProduct_(num1,num2,n-1,m,dp);
+        return dp[n][m]=max(product,max(acceptboth,max(a,b)));
+    }
+    int maxDotProduct(vector<int>& num1, vector<int>& num2) {
+        int n=num1.size();
+        int m=num2.size();
+        vector<vector<int>> dp(n+1,vector<int>(m+1,-1e9));
+        return maxDotProduct_(num1,num2,n,m,dp);
+    }
+};
