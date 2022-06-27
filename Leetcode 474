@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int findMaxForm_(vector<string>& strs,int S, int M, int N, vector<vector<int>> &count,vector<vector<vector<int>>> &dp){
+        for(int s=strs.size();s>=0;s--){
+            for(int m=0;m<=M;m++){
+                for(int n=0;n<=N;n++){
+            if((s==strs.size()) || (m==0 && n==0) ){
+            dp[s][m][n]= 0;
+                continue;
+        }
+         int mcount=count[0][s],ncount=count[1][s];
+        int a=0;
+        if(m-mcount>=0 && n-ncount>=0)
+           { a=dp[s+1][m-mcount][n-ncount]+1;}
+           int b= dp[s+1][m][n];
+        dp[s][m][n]=max(a,b);}}}
+        return dp[S][M][N];
+    }
+    
+    pair<int,int> countzeroones(string s){
+        int zero=0,ones=0;
+        for(int i=0;i<s.size();i++){
+            if(s[i]=='0'){
+                zero++;
+            }
+            else{
+                ones++;
+            }
+        }
+        return make_pair(zero,ones);
+    }
+    
+    
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        int N=strs.size();
+        vector<vector<int>> count(2,vector<int>(N));
+        for(int i=0;i<N;i++){
+            pair<int,int> p=countzeroones(strs[i]);
+            count[0][i]=p.first;
+                count[1][i]=p.second;
+        }
+        vector<vector<vector<int>>> dp(N+1,vector<vector<int>>(m+1,vector<int>(n+1,-1)));
+          return findMaxForm_(strs,0,m,n,count,dp);
+    }
+};
