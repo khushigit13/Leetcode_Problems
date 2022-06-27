@@ -1,0 +1,66 @@
+class Solution {
+public:
+//     tabulation
+    int mod=(int)1e9+7;
+      long  numsDecodings_(string s,int IDX,vector<long > &dp){
+          
+          for(int idx=s.size();idx>=0;idx--){
+            if(idx==s.size()){
+              dp[idx]=1;
+                continue;
+        }
+          
+       
+        if(s[idx]=='0'){
+              dp[idx]=0;
+            continue;
+        }
+           long count=0;
+          if(s[idx]=='*'){
+              count=(count+(dp[idx+1]*9))%mod;
+              if(idx<(s.size()-1))
+                  {  char ch1=s[idx];
+                    char ch2=s[idx+1];
+                   if(ch2=='*'){
+                        count=(count+(dp[idx+2]*15))%mod;
+                          }
+                 
+                      if('0'<=ch2 && ch2<='6'){
+                          count=(count+(dp[idx+2]*2))%mod;
+                      }
+                      if('7'<=ch2 && ch2<='9'){
+                          count=(count+(dp[idx+2]*1))%mod;
+                      }
+                  }
+          }
+          
+          else{
+       count=(count+dp[idx+1])%mod;
+        if(idx<s.size()-1)
+        {  char ch1=s[idx];
+         char ch2=s[idx+1];
+         if(ch2=='*'){
+             if(ch1=='1'){
+                 count=(count+dp[idx+2]*9)%mod;
+             }
+             if(ch1=='2'){
+                 count=(count+dp[idx+2]*6)%mod;
+             }
+         }
+         else
+           { int num=(ch1-'0')*10+(ch2-'0');
+            if(num<=26)
+        count=(count+dp[idx+2])%mod;}
+        }
+          }
+          
+         dp[idx]=count;
+          
+    }
+      return dp[IDX];}
+    
+    int numDecodings(string s) {
+        vector<long> dp(s.size()+1,-1);
+       return (int)numsDecodings_(s,0,dp);
+    }
+};
