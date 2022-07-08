@@ -1,0 +1,20 @@
+ TreeNode* lca=NULL; //global
+
+bool lcafunc(TreeNode* root, TreeNode* p, TreeNode* q){
+    if(root==NULL){
+        return false;
+    }
+   
+    bool sp=(root->val==p->val || root->val==q->val);
+    bool lp=lcafunc(root->left,p,q);
+    bool rp=lcafunc(root->right,p,q);
+    if((lp && rp) || (lp && sp) || (rp && sp)){
+        lca=root;
+    }
+    return sp || lp ||rp;
+}
+    
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+         lcafunc(root,p,q);
+        return lca;  //here lca is global
+    }
