@@ -1,0 +1,30 @@
+ void binarystringpaths_(TreeNode* root,string str,vector<string> &paths){
+        if(root==NULL){
+            return;
+        }
+         if(str==""){
+            str=to_string(root->val);
+        }
+        else{
+            str+="->"+to_string(root->val);
+        }
+        if(root->left==NULL && root->right==NULL){
+            paths.push_back(str);
+        }
+       
+        if(root->left!=NULL){
+            binarystringpaths_(root->left,str,paths);
+        }
+        if(root->right!=NULL){
+            binarystringpaths_(root->right,str,paths);
+        }
+        str.erase(str.size()-1);
+        return;
+    }
+    
+    vector<string> binaryTreePaths(TreeNode* root) {
+        vector<string> paths;
+        binarystringpaths_(root,"",paths);
+        return paths;
+       
+    }
